@@ -1,4 +1,4 @@
-const {findOvas, createOva, createMetaData } = require('../repositories/ovas.repository')
+const {findOvas, createOva, createMetaData, registerCalificationOva, getCalificationOva } = require('../repositories/ovas.repository')
 
 
     /**
@@ -27,18 +27,46 @@ const {findOvas, createOva, createMetaData } = require('../repositories/ovas.rep
      * @param {*} body 
      * @returns 
      */
-         const createOvaMetaDataService = async (body) => {
-            
-            const response = await createMetaData(body)
-            const data = body
-            data.id = response.rows[0].id
-            return data
-        }
+    const createOvaMetaDataService = async (body) => {
+        const response = await createMetaData(body)
+        const data = body
+        data.id = response.rows[0].id
+        return data
+    }
+
+    /**
+     * service to save the calification of an ova
+     * @param {*} body 
+     * @returns 
+     */
+    const registerCalificationOvaService = async (body) => {
+        const response = await registerCalificationOva(body)
+        const data = body
+        data.calification = response.rows[0].calification
+        return data
+    }
+
+    /**
+     * service to get the calification of an ova 
+     * @param {*} body 
+     * @returns 
+     */
+    const getOvaCalificationService = async (ovaId) => {
+        const response = await getCalificationOva(ovaId)
+        let sumatory = 0
+        response.rows.forEach(calification => {
+            sumatory += calification.calification
+        });
+        const averageCalification = sumatory / response.rows.length
+        return averageCalification
+    }
 
     
 module.exports = {
     getOvasService,
     createOvaService,
-    createOvaMetaDataService
+    createOvaMetaDataService,
+    registerCalificationOvaService,
+    getOvaCalificationService
 
 }

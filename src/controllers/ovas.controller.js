@@ -1,4 +1,4 @@
-const {getOvasService, createOvaService, createOvaMetaDataService} = require('../services/ovas.service')
+const {getOvasService, createOvaService, createOvaMetaDataService, registerCalificationOvaService, getOvaCalificationService} = require('../services/ovas.service')
 
 
 /**
@@ -37,7 +37,46 @@ const createOvaController = async (req, res) => {
         res.status(500).json(error.message)    
     }
 }
+
+/**
+ * Controller to register the calification of an ova
+ * @param {*} req 
+ * @param {*} res 
+ */
+ const registerCalificationOvaController = async (req, res) => {
+    try{   
+        const calification = req.body
+        const response = await registerCalificationOvaService(calification)
+        res.json({
+            message: "Ova calificated Succesfully",
+            calification: response
+        })
+    }catch(error){
+        res.status(500).json(error.message)    
+    }
+}
+
+/**
+ * Controller to get the average calification of an ova
+ * @param {*} req 
+ * @param {*} res 
+ */
+ const getCalificationOvaController = async (req, res) => {
+    try{
+        const ovaId = req.params.id   
+        const calification = await getOvaCalificationService(ovaId)
+        res.json({
+            message: "Calification obtained succesfully",
+            calification: calification
+        })
+    }catch(error){
+        res.status(500).json(error.message)    
+    }
+}
+
 module.exports = {
     findOvasController,
-    createOvaController
+    createOvaController,
+    registerCalificationOvaController,
+    getCalificationOvaController
 }
