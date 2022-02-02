@@ -24,6 +24,10 @@ module.exports = {
 
     async getCalificationOva(ovaId){
         return pool.query('SELECT calification FROM ovascalification WHERE id_ova = $1', [ovaId])
+    },
+
+    async findMetaData(){
+        return pool.query('SELECT * FROM metaData')
     }
 
     

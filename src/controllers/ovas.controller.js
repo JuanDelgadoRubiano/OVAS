@@ -1,4 +1,4 @@
-const {getOvasService, createOvaService, createOvaMetaDataService, registerCalificationOvaService, getOvaCalificationService} = require('../services/ovas.service')
+const {getOvasService, createOvaService, createOvaMetaDataService, registerCalificationOvaService, getOvaCalificationService, getOvaMetadataService} = require('../services/ovas.service')
 const fs = require('fs');
 
 /**
@@ -77,11 +77,34 @@ const createOvaController = async (req, res) => {
 const saveFileOva = async (req, res) => {
     let archivos=req.files.uploads;
        for (let i=0; i<archivos.length;++i){
-           fs.rename(archivos[i].path, `src/uploads/${archivos[i].originalFilename}.js`, () => { 
+           const test = archivos[i].path.split('\\')
+           const test2 = test.length
+           fs.rename(`src/../../../PWA/Tucucha/aqui/${test[test2 - 1]}`, `src/../../../PWA/Tucucha/aqui/${archivos[i].originalFilename}`, () => { 
                console.log("\nFile Renamed!\n"); 
            }); 
        }    
        res.json({mensaje:"Archivo subido"});
+}
+
+
+const saveJsonOva = async (req, res) => {
+    let archivos=req.files.uploads;
+       for (let i=0; i<archivos.length;++i){
+           fs.rename(archivos[i].path, `src/public/${archivos[i].originalFilename}`, () => { 
+               console.log("\nFile Renamed!\n"); 
+           }); 
+       }    
+       res.json({mensaje:"Archivo subido"});
+}
+
+
+const getMetaData = async (req, res) => {
+    try{
+        const response = await getOvaMetadataService()
+        res.json(response.rows)
+    }catch(error){
+        res.status(500).json(error.message)            
+    }
 }
 
 module.exports = {
@@ -89,5 +112,7 @@ module.exports = {
     createOvaController,
     registerCalificationOvaController,
     getCalificationOvaController,
-    saveFileOva
+    saveFileOva,
+    getMetaData,
+    saveJsonOva
 }
