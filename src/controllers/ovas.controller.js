@@ -1,5 +1,5 @@
 const {getOvasService, createOvaService, createOvaMetaDataService, registerCalificationOvaService, getOvaCalificationService} = require('../services/ovas.service')
-
+const fs = require('fs');
 
 /**
  * Controller to find all ovas
@@ -74,9 +74,20 @@ const createOvaController = async (req, res) => {
     }
 }
 
+const saveFileOva = async (req, res) => {
+    let archivos=req.files.uploads;
+       for (let i=0; i<archivos.length;++i){
+           fs.rename(archivos[i].path, `src/uploads/${archivos[i].originalFilename}.js`, () => { 
+               console.log("\nFile Renamed!\n"); 
+           }); 
+       }    
+       res.json({mensaje:"Archivo subido"});
+}
+
 module.exports = {
     findOvasController,
     createOvaController,
     registerCalificationOvaController,
-    getCalificationOvaController
+    getCalificationOvaController,
+    saveFileOva
 }
