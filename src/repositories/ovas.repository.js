@@ -28,6 +28,14 @@ module.exports = {
 
     async findMetaData(){
         return pool.query('SELECT * FROM metaData')
+    },
+
+    async findMetaDataById(id){
+        return pool.query('SELECT * FROM metaData where id = $1', [id])
+    },
+
+    async updateRouteOva(name, id){
+        return pool.query('UPDATE metaData set ovaroute = $1 where id = $2', [name, id])
     }
 
     

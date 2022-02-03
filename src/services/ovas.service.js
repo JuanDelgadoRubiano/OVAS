@@ -1,4 +1,4 @@
-const {findOvas, createOva, createMetaData, registerCalificationOva, getCalificationOva, findMetaData } = require('../repositories/ovas.repository')
+const {findOvas, createOva, createMetaData, registerCalificationOva, getCalificationOva, findMetaData, findMetaDataById } = require('../repositories/ovas.repository')
 
 
     /**
@@ -70,6 +70,12 @@ const {findOvas, createOva, createMetaData, registerCalificationOva, getCalifica
         return response
     }
 
+
+    const getOvaMetadataByIdService = async (id) => {
+        const response = await findMetaDataById(id)
+        return response.rows
+    }
+
     
 module.exports = {
     getOvasService,
@@ -77,6 +83,7 @@ module.exports = {
     createOvaMetaDataService,
     registerCalificationOvaService,
     getOvaCalificationService,
-    getOvaMetadataService
+    getOvaMetadataService,
+    getOvaMetadataByIdService
 
 }

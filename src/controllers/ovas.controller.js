@@ -1,5 +1,6 @@
-const {getOvasService, createOvaService, createOvaMetaDataService, registerCalificationOvaService, getOvaCalificationService, getOvaMetadataService} = require('../services/ovas.service')
+const {getOvasService, createOvaService, createOvaMetaDataService, registerCalificationOvaService, getOvaCalificationService, getOvaMetadataService, getOvaMetadataByIdService} = require('../services/ovas.service')
 const fs = require('fs');
+const { updateRouteOva } = require('../repositories/ovas.repository');
 
 /**
  * Controller to find all ovas
@@ -76,10 +77,11 @@ const createOvaController = async (req, res) => {
 
 const saveFileOva = async (req, res) => {
     let archivos=req.files.uploads;
+    var test = archivos[0].originalFilename.split('ova')
+    var test2 = test[1].split('.')
+    await updateRouteOva(archivos[0].originalFilename, test2[0])
        for (let i=0; i<archivos.length;++i){
-           const test = archivos[i].path.split('\\')
-           const test2 = test.length
-           fs.rename(`src/../../../PWA/Tucucha/aqui/${test[test2 - 1]}`, `src/../../../PWA/Tucucha/aqui/${archivos[i].originalFilename}`, () => { 
+           fs.rename(archivos[i].path, `src/public/${archivos[i].originalFilename}`, () => { 
                console.log("\nFile Renamed!\n"); 
            }); 
        }    
@@ -107,6 +109,16 @@ const getMetaData = async (req, res) => {
     }
 }
 
+
+const getMetaDataById = async (req, res) => {
+    try{
+        const response = await getOvaMetadataByIdService(req.params.id)
+        res.json(response[0])
+    }catch(error){
+        res.status(500).json(error.message)            
+    }
+}
+
 module.exports = {
     findOvasController,
     createOvaController,
@@ -114,5 +126,6 @@ module.exports = {
     getCalificationOvaController,
     saveFileOva,
     getMetaData,
-    saveJsonOva
+    saveJsonOva,
+    getMetaDataById
 }

@@ -4,11 +4,11 @@ const router = Router();
 const multipart = require('connect-multiparty');  
 
 // Ovas controller
-const {findOvasController, createOvaController, registerCalificationOvaController, getCalificationOvaController, saveFileOva, getMetaData, saveJsonOva} = require('../controllers/ovas.controller')
+const {findOvasController, createOvaController, registerCalificationOvaController, getCalificationOvaController, saveFileOva, getMetaData, saveJsonOva, getMetaDataById} = require('../controllers/ovas.controller')
 
 
 const multipartMiddleware = multipart({  
-    uploadDir: 'src/../../../PWA/Tucucha/aqui'
+    uploadDir: 'src/public'
 });
 
 const multipartMiddleware2 = multipart({
@@ -22,6 +22,7 @@ router.post('/ova', createOvaController);
 router.post('/calificationOva', registerCalificationOvaController);
 router.get('/calification/:id', getCalificationOvaController)
 router.get('/metaData', getMetaData)
+router.get('/metaDataById/:id', getMetaDataById)
 
 router.post('/ovaArchivo', multipartMiddleware, saveFileOva)
 router.post('/ovaJson',multipartMiddleware2, saveJsonOva)
