@@ -5,7 +5,7 @@ require('dotenv').config();
 var path = require('path');
 var public = path.join(__dirname, 'public');
 
-const PORT = process.env.puertoApp || 8080;
+const PORT = 3000;
 
 // middlewares
 app.use(express.json());
