@@ -76,27 +76,24 @@ const createOvaController = async (req, res) => {
 }
 
 const saveFileOva = async (req, res) => {
-    let archivos=req.files.uploads;
-    var test = archivos[0].originalFilename.split('ova')
+  let archivos=req.file
+    var test = archivos.originalname.split('ova')
     var test2 = test[1].split('.')
-    await updateRouteOva(archivos[0].originalFilename, test2[0])
-       for (let i=0; i<archivos.length;++i){
-           fs.rename(archivos[i].path, `src/public/${archivos[i].originalFilename}`, () => { 
-               console.log("\nFile Renamed!\n"); 
-           }); 
-       }    
-       res.json({mensaje:"Archivo subido"});
+    await updateRouteOva(archivos.originalname, test2[0])
+    fs.rename(archivos.path, `src/public/${archivos.originalname}`, () => { 
+        console.log("\nFile Renamed!\n"); 
+    }); 
+
+    res.json({mensaje:"Archivo subido"});
 }
 
 
 const saveJsonOva = async (req, res) => {
-    let archivos=req.files.uploads;
-       for (let i=0; i<archivos.length;++i){
-           fs.rename(archivos[i].path, `src/public/${archivos[i].originalFilename}`, () => { 
-               console.log("\nFile Renamed!\n"); 
-           }); 
-       }    
-       res.json({mensaje:"Archivo subido"});
+   let archivos=req.file;
+    fs.rename(archivos.path, `src/public/${archivos.originalname}`, () => { 
+        console.log("\nFile Renamed!\n"); 
+    }); 
+    res.json({mensaje:"Archivo subido"});
 }
 
 
